@@ -1,8 +1,11 @@
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export const CircleInfoIcon = (props) => (
-  <FontAwesome6 name="circle-info" size={24} color="white" {...props} />
+  <MaterialCommunityIcons name="information" size={32} color="white" {...props} />
+);
+
+export const MenuIcon = (props) => (
+  <MaterialCommunityIcons name="menu" size={32} color="white" {...props} />
 );
 
 export const HomeIcon = (props) => (

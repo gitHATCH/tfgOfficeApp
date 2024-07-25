@@ -1,40 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React, { createContext, useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const AuthContext = React.createContext([{}, ()=>{}])
+const AuthContext = createContext();
 
-const AuthProvider = (props) => {
-    const [auth, setAuth] = useState(false)
-    const [loading, setLoading] = useState(true)
+export const AuthProvider = ({ children }) => {
+    const [auth, setAuth] = useState(null);
 
-    const authorize = async() => {
-        const token = localStorage.getItem('token')
-        if(!token){
-            return
-        }
-        setAuth(token)
-    }
+    useEffect(() => {
+        const loadAuth = async () => {
+            const token = await AsyncStorage.getItem('authToken');
+            if (token) {
+                setAuth({ token });
+            }
+        };
+        loadAuth();
+    }, []);
 
-    const unAuthorize = async() => {
-        setAuth(false)
-        localStorage.removeItem('token')
-        router.push("/")
-    }
+    const loginUser = async (token) => {
+        await AsyncStorage.setItem('authToken', token);
+        setAuth({ token });
+    };
 
-    const handleAuth = (token) => {
-        setAuth(token)
-    }
-
-    const loginUser = async(typeId, userId, password) => {
-        localStorage.setItem('token',typeId+userId+password)
-        setAuth(typeId+userId+password)
-        authorize()
-    }
+    const logoutUser = async () => {
+        await AsyncStorage.removeItem('authToken');
+        setAuth(null);
+    };
 
     return (
-        <AuthContext.Provider value={{auth,handleAuth,loading,authorize,unAuthorize,loginUser}}>
-            {props.children}
+        <AuthContext.Provider value={{ auth, loginUser, logoutUser }}>
+            {children}
         </AuthContext.Provider>
-    )      
-}
+    );
+};
 
-export {AuthContext, AuthProvider}
+export default AuthContext;

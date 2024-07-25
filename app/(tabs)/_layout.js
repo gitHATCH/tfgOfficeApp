@@ -1,8 +1,6 @@
 import { Tabs } from "expo-router";
 
-import { HomeIcon, InfoIcon, UserIcon, ReservationsHistoryIcon, ScheduledReservationsIcon } from "../../components/Icons";
-import { useEffect } from "react";
-import { check } from "prettier";
+import { HomeIcon, UserIcon, ReservationsHistoryIcon, ScheduledReservationsIcon } from "../../components/Icons";
 
 export default function TabsLayout() {
   return (
